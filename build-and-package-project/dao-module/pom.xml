@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.hwq</groupId>
+        <artifactId>build-and-package-project</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>dao-module</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>dao-module</name>
+    <description>DAO - 数据持久层模块</description>
+
+    <properties>
+        <java.version>20</java.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.hwq</groupId>
+            <artifactId>model-module</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+</project>
