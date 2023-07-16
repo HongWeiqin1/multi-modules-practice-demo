@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>web-module</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>web-module</name>
+    <description>WEB - 提供外部 API 模块</description>
+
+    <parent>
+        <groupId>com.hwq</groupId>
+        <artifactId>multi-environment-configure-and-switch</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <properties>
+        <java.version>20</java.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.hwq</groupId>
+            <artifactId>service-module</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+    </dependencies>
+
+
+    <!-- 多环境配置 -->
+    <profiles>
+        <!-- 开发环境（dev） -->
+        <profile>
+            <id>dev</id>
+            <properties>
+                <!-- 配置文件目录名称，【注意】：profile.active是自定义的变量名称 -->
+                <profile.active>dev</profile.active>
+            </properties>
+            <activation>
+                <!-- 默认启动 dev 环境（即默认是开发环境） -->
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+
+        <!-- 生产环境（prod） -->
+        <profile>
+            <id>prod</id>
+            <properties>
+                <!-- 配置文件目录名称 -->
+                <profile.active>prod</profile.active>
+            </properties>
+        </profile>
+
+        <!-- 测试环境（test） -->
+        <profile>
+            <id>test</id>
+            <properties>
+                <!-- 配置文件目录名称 -->
+                <profile.active>test</profile.active>
+            </properties>
+        </profile>
+    </profiles>
+
+
+    <build>
+        <!-- mvn clean package 打包后的 Jar 文件名称 -->
+        <finalName>multi-environment-configure1</finalName>
+        <resources>
+            <resource>
+                <!-- 【多环境切换】：切换不同环境的路径：${profile.active}中的 profile.active 可自定义 -->
+                <directory>src/main/resources/${profile.active}</directory>
+                <filtering>true</filtering>
+            </resource>
+
+            <!-- 以下添加部分就是将resources目录下的其他文件一起打包 -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <!-- 以下<include>添加部分就是将resources目录下的其他文件需要一起打包 -->
+                <includes>
+                    <include>**/*.properties</include>
+                    <!-- <include>**/*.yml</include>-->
+                    <!-- <include>mapper/*</include>-->
+                    <!-- <include>logback.xml</include>-->
+                    <include>log.xml</include>
+                </includes>
+
+                <!-- 打包时删除dev、prod、test目录 -->
+                <excludes>
+                    <exclude>dev/*.properties</exclude>
+                    <exclude>prod/*.properties</exclude>
+                    <exclude>test/*.properties</exclude>
+                </excludes>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+
+        <!--        <plugins>-->
+        <!--            <plugin>-->
+        <!--                <groupId>org.springframework.boot</groupId>-->
+        <!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
+        <!--                <configuration>-->
+        <!--                    &lt;!&ndash; 在启动模块的pom.xml中，指定 mainClass 为全局的唯一入口 &ndash;&gt;-->
+        <!--                    <mainClass>com.hwq.DemoWebApplication</mainClass>-->
+        <!--                    <layout>ZIP</layout>-->
+        <!--                </configuration>-->
+        <!--                <executions>-->
+        <!--                    <execution>-->
+        <!--                        <goals>-->
+        <!--                            &lt;!&ndash; 把某个模块和Maven提供的第三方Jar包依赖一起打包至target中生成的 Jar 中  &ndash;&gt;-->
+        <!--                            <goal>repackage</goal>-->
+        <!--                        </goals>-->
+        <!--                    </execution>-->
+        <!--                </executions>-->
+        <!--            </plugin>-->
+        <!--        </plugins>-->
+    </build>
+
+</project>
